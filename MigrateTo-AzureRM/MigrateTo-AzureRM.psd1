@@ -12,7 +12,7 @@
 RootModule = 'MigrateTo-AzureRM.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.0.5'
+ModuleVersion = '1.2.0.6'
 
 # ID used to uniquely identify this module
 GUID = '0b8173d2-e45f-4382-b9c9-cf6d6bc79f53'
@@ -104,9 +104,8 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = '`
-        I have taken away to automatic installation of modules as they would not detect when the modules were already installed. `
-        If the modules aren''t imported or aren''t installed, the module will not run.'
+        ReleaseNotes = 'I have taken away to automatic installation of modules as they would not detect when the modules were already installed.
+If the modules aren''t imported or aren''t installed, the module will not run.'
 
     } # End of PSData hashtable
 
