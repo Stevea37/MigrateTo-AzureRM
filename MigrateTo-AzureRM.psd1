@@ -12,7 +12,7 @@
 RootModule = 'MigrateTo-AzureRM.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.0.4'
+ModuleVersion = '1.2.0.5'
 
 # ID used to uniquely identify this module
 GUID = '0b8173d2-e45f-4382-b9c9-cf6d6bc79f53'
@@ -21,7 +21,7 @@ GUID = '0b8173d2-e45f-4382-b9c9-cf6d6bc79f53'
 Author = 'Steven Ayers'
 
 # Company or vendor of this module
-CompanyName = 'RedPixie'
+CompanyName = 'Steven Ayers'
 
 # Copyright statement for this module
 Copyright = '(c) 2016 Steven Ayers. All rights reserved.'
@@ -92,19 +92,21 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('Azure','Classic','AzureRM','ResourceManager','Migrate')
 
         # A URL to the license for this module.
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/Stevea37/PSGallery-MigrateTo-AzureRM'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'I have taken away to automatic installation of modules as they would not detect when the modules were already installed. If the modules aren''t imported or aren''t installed, the module will not run. '
+        ReleaseNotes = '`
+        I have taken away to automatic installation of modules as they would not detect when the modules were already installed. `
+        If the modules aren''t imported or aren''t installed, the module will not run.'
 
     } # End of PSData hashtable
 
