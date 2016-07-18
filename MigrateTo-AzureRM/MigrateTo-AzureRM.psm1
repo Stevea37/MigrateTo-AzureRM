@@ -51,14 +51,30 @@
              MigrateTo-AzureVM 
   
              #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName="SpecifyNetworks")]
     param(
-        [System.Management.Automation.PSCredential]$AzureCredentials = (Get-Credential -Message "Please enter Azure credentials"),
-        [string]$RMSubscriptionId,
-        [string]$ClassicSubscriptionId,
-        [string][parameter(ParameterSetName="SpecifyNetwork")]$VirtualNetworkName,
-        [switch][parameter(ParameterSetName="AllNetworks")]$AllVirtualNetworks,
-        [switch]$Force
+        [System.Management.Automation.PSCredential]
+        [parameter(ParameterSetName="AllNetworks")]
+        [parameter(ParameterSetName="SpecifyNetwork")]
+        $AzureCredentials = (Get-Credential -Message "Please enter Azure credentials"),
+        [string]
+        [parameter(ParameterSetName="AllNetworks")]
+        [parameter(ParameterSetName="SpecifyNetwork")]
+        $RMSubscriptionId,
+        [string]
+        [parameter(ParameterSetName="AllNetworks")]
+        [parameter(ParameterSetName="SpecifyNetwork")]
+        $ClassicSubscriptionId,
+        [string]
+        [parameter(ParameterSetName="SpecifyNetwork")]
+        $VirtualNetworkName,
+        [switch]
+        [parameter(ParameterSetName="AllNetworks")]
+        $AllVirtualNetworks,
+        [switch]
+        [parameter(ParameterSetName="AllNetworks")]
+        [parameter(ParameterSetName="SpecifyNetwork")]
+        $Force
     
     )
 
@@ -67,11 +83,13 @@
     #--------------------------------------------------------------------------------------------------------------------------------------
     # Prepare for Migration
     #--------------------------------------------------------------------------------------------------------------------------------------
-    Start-Transcript -Path "$env:temp\MigrateTo-AzureRM\$(Get-Date -Format YYmmddHHmmss).log"
+    Start-Transcript -Path "$env:temp\MigrateTo-AzureRM\$(Get-Date -Format yyMMddHHmmss).log" | Out-Null
+    "Log file stored at: $env:temp\MigrateTo-AzureRM\$(Get-Date -Format yyMMddHHmmss).log"
     
     if ((Get-Module Azure,AzureRM -ListAvailable).Count -lt 2)
     {
        Write-Error "Make sure you have the Azure & AzureVM modules installed on your workstation, along with their sub-modules. For more informatiom, visit https://github.com/Azure/azure-powershell."
+       Stop-Transcript -OutVariable $OutputDump | Out-Null
        break
     }
     elseif ((Get-Module Azure,AzureRM).Count -lt 2)
@@ -80,6 +98,7 @@
         if ($FailedToLoad)
         {
             Write-Error "The modules Azure & AzureRM could not be imported."
+            Stop-Transcript -OutVariable $OutputDump | Out-Null
             break
         }
     }
@@ -100,6 +119,7 @@
     catch
     {
         Write-Host $Error[0].Exception.Message -ForegroundColor Red
+        Stop-Transcript -OutVariable $OutputDump | Out-Null
         break
     }
 
@@ -114,6 +134,7 @@
         catch
         {
             Write-Error "The Azure RM Subscription ID you provided is invalid. Please verify the ID is correct, or specify the function without the `"-RMSubscriptionID`" parameter."
+            Stop-Transcript -OutVariable $OutputDump | Out-Null
             break
         }
 
@@ -163,6 +184,7 @@
         else
         {
             Write-Error "You have no Subscriptions"
+            Stop-Transcript -OutVariable $OutputDump | Out-Null
             break   
         }
 
@@ -179,6 +201,7 @@
     catch
     {
         Write-Host $Error[0].Exception.Message -ForegroundColor Red
+        Stop-Transcript -OutVariable $OutputDump | Out-Null
         break
     }
 
@@ -193,6 +216,7 @@
         catch
         {
             Write-Error "The Azure Classic Subscription ID you provided is invalid. Please verify the ID is correct, or specify the function without the `"-ClassicSubscriptionID`" parameter."
+            Stop-Transcript -OutVariable $OutputDump | Out-Null
             break
         }
 
@@ -244,6 +268,7 @@
         else
         {
             Write-Error "You have no Subscriptions"
+            Stop-Transcript -OutVariable $OutputDump | Out-Null
             break
         }
     }
@@ -298,6 +323,7 @@
     if (!$VNets)
     {
         Write-Error "No Classic Virtual Networks were found under the subscription $((Get-AzureSubscription -SubscriptionId $CLSubID).SubscriptionName) ($CLSubID)"
+        Stop-Transcript -OutVariable $OutputDump | Out-Null
         break
     }
     elseif ($AllVirtualNetworks)
@@ -369,6 +395,7 @@
             {
                 $Error[0]
                 Write-Host "Navigate to the Resource Group `'<Name of Failed Resource>-Migrated`' to view the deployment log for any failures." -ForegroundColor Red
+                Stop-Transcript -OutVariable $OutputDump | Out-Null
                 break
             }
 
@@ -409,7 +436,7 @@
         }
 
     } while (($MoveOption -ine "y") -and ($MoveOption -ine "n"))
-    Stop-Transcript
+    Stop-Transcript -OutVariable $OutputDump | Out-Null
 } 
 
 Export-ModuleMember -Function MigrateTo-AzureRM 
