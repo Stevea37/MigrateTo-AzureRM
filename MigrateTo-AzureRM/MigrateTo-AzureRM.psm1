@@ -85,7 +85,7 @@
     #--------------------------------------------------------------------------------------------------------------------------------------
     Start-Transcript -Path "$env:temp\MigrateTo-AzureRM\$(Get-Date -Format yyMMddHHmmss).log" | Out-Null
     "Log file stored at: $env:temp\MigrateTo-AzureRM\$(Get-Date -Format yyMMddHHmmss).log"
-    
+
     if ((Get-Module Azure,AzureRM -ListAvailable).Count -lt 2)
     {
        Write-Error "Make sure you have the Azure & AzureVM modules installed on your workstation, along with their sub-modules. For more informatiom, visit https://github.com/Azure/azure-powershell."
